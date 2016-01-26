@@ -15,5 +15,10 @@ class ServiceConfigTest extends FlatSpec with Matchers {
     config.valueOf("value_2") should be("value2")
   }
 
+  it should "give a none when the property cannot be found" in {
+    val config = new Config()
+    config.valueOf("rubbish") should be(None)
+  }
+
 
 }
