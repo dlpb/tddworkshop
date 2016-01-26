@@ -9,5 +9,11 @@ class ServiceConfigTest extends FlatSpec with Matchers {
     config.valueOf("present_value") should be("present")
   }
 
+  it should "give a value for two properties when getting those properties and their values are present" in {
+    val config = new Config()
+    config.valueOf("value_1") should be("value1")
+    config.valueOf("value_2") should be("value2")
+  }
+
 
 }
