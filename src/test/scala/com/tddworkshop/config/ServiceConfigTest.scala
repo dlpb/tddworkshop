@@ -21,12 +21,9 @@ class ServiceConfigTest extends FlatSpec with Matchers {
   }
 
   it should "read in some properties from a string when created" in {
-    val configString =
-      s"""
-         |source=string
-       """.stripMargin
+    val configString = "source=string"
     val config = new Config(configString)
-    config.valueOf("source") should be("string")
+    config.valueOf("source") should be(Some("string"))
   }
 
 

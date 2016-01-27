@@ -1,10 +1,23 @@
 package com.tddworkshop.config
 
-class Config {
-  def valueOf(s: String): Option[String] = s match {
-    case "present_value" => Some("present")
-    case "value_1" => Some("value1")
-    case "value_2" => Some("value2")
-    case _ => None
+class Config(source: String) {
+
+  val properties: Map[String, String] = {
+   source.lines.map {
+     line =>
+       val parts = line.split("=")
+       println(s"$line -> parts are")
+       parts foreach println
+       (parts(0), parts(1))
+   }.toMap
   }
+
+  def this() = {
+    this(
+      """present_value=present
+        |value_1=value1
+        |value_2=value2""".stripMargin)
+  }
+
+  def valueOf(s: String): Option[String] = properties.get(s)
 }
