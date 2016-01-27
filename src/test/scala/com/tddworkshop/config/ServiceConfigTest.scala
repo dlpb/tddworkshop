@@ -26,5 +26,15 @@ class ServiceConfigTest extends FlatSpec with Matchers {
     config.valueOf("source") should be(Some("string"))
   }
 
+  it should "read in some properties from a string, when there is leading and trailing whitespace" in {
+    val configString =
+      """
+        |source=string
+      """.stripMargin
+
+    val config = new Config(configString)
+    config.valueOf("source") should be(Some("string"))
+  }
+
 
 }
