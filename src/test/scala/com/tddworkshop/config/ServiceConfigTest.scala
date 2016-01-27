@@ -89,8 +89,8 @@ class ServiceConfigTest extends FlatSpec with Matchers {
   }
 
   it should "read in a config from a properties file" in {
-    val config = ConfigProvider.load(getClass.getResource("example.properties"))
-    config.getValue("source") should be("file")
+    val config = ConfigProvider.load(getClass.getResource("/example.properties"))
+    config.getValue("source") should be(Some("file"))
   }
 
 }

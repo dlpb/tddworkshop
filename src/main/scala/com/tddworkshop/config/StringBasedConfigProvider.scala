@@ -1,5 +1,9 @@
 package com.tddworkshop.config
 
+import java.net.URL
+
+import scala.io.Source
+
 protected class StringBasedConfigProvider private[config] (source: String) extends FallbackAvailableConfigProvider{
 
   private var fallback: Option[ConfigProvider] = None
@@ -48,4 +52,5 @@ protected[config] trait FallbackAvailableConfigProvider extends ConfigProvider {
 
 object ConfigProvider {
   def load(source: String): FallbackAvailableConfigProvider = new StringBasedConfigProvider(source)
+  def load(url: URL): FallbackAvailableConfigProvider = new StringBasedConfigProvider(Source.fromURL(url).mkString)
 }
