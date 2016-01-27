@@ -64,6 +64,16 @@ class ServiceConfigTest extends FlatSpec with Matchers {
     config.getValue("data") should be(Some("value=true"))
   }
 
+  it should "trim whitespace around the = character" in {
+    val configString =
+      """
+        |data =    value
+      """.stripMargin
+
+    val config = ConfigProvider.load(configString)
+    config.getValue("data") should be(Some("value"))
+  }
+
   it should "allow us to provide a fallback for a specific key if it doesnt exist" in {
     val config = ConfigProvider.load("")
        config.getValueWithFallback("rubbish", "fallback") should be("fallback")

@@ -10,17 +10,9 @@ protected class StringBasedConfigProvider private[config] (source: String) exten
    }.map {
      line =>
      val parts = line.split("=", 2)
-     (parts(0), parts(1))
+     (parts(0).trim, parts(1).trim)
    }.toMap
   }
-
-  println(
-    s"""
-      | properties are $properties
-      | self is $this
-      | fallback is $fallback
-    """.stripMargin)
-
 
   override def getValue(key: String): Option[String] =
     if(properties.contains(key)) properties.get(key)
