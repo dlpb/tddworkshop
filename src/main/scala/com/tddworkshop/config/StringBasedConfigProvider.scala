@@ -1,6 +1,6 @@
 package com.tddworkshop.config
 
-class StringBasedConfigProvider(source: String) extends ConfigProvider{
+protected class StringBasedConfigProvider(source: String) extends ConfigProvider{
 
   val properties: Map[String, String] = {
    source.trim.lines.filter{
@@ -17,6 +17,9 @@ class StringBasedConfigProvider(source: String) extends ConfigProvider{
 
 trait ConfigProvider {
   def getValue(key: String): Option[String]
+  def getValueWithFallback(key: String, fallbackValue: String): String = {
+    getValue(key).getOrElse(fallbackValue)
+  }
 }
 
 object ConfigProvider {
