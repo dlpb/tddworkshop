@@ -1,6 +1,6 @@
 package com.tddworkshop.config
 
-class Config(source: String) {
+class Config(source: String) extends ConfigProvider{
 
   val properties: Map[String, String] = {
    source.trim.lines.filter{
@@ -12,5 +12,9 @@ class Config(source: String) {
    }.toMap
   }
 
-  def valueOf(s: String): Option[String] = properties.get(s)
+  def getValue(s: String): Option[String] = properties.get(s)
+}
+
+trait ConfigProvider {
+  def getValue(key: String): Option[String]
 }

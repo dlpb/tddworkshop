@@ -6,7 +6,7 @@ class ServiceConfigTest extends FlatSpec with Matchers {
 
   "The config loader" should "give a value when geting a property whose value is present" in {
     val config = new Config("present_value=present")
-    config.valueOf("present_value") should be(Some("present"))
+    config.getValue("present_value") should be(Some("present"))
   }
 
   it should "give a value for two properties when getting those properties and their values are present" in {
@@ -15,20 +15,20 @@ class ServiceConfigTest extends FlatSpec with Matchers {
         |value_1=value1
         |value_2=value2
       """.stripMargin)
-    config.valueOf("value_1") should be(Some("value1"))
-    config.valueOf("value_2") should be(Some("value2"))
-    config.valueOf("present_value") should be(None)
+    config.getValue("value_1") should be(Some("value1"))
+    config.getValue("value_2") should be(Some("value2"))
+    config.getValue("present_value") should be(None)
   }
 
   it should "give a none when the property cannot be found" in {
     val config = new Config("")
-    config.valueOf("rubbish") should be(None)
+    config.getValue("rubbish") should be(None)
   }
 
   it should "read in some properties from a string when created" in {
     val configString = "source=string"
     val config = new Config(configString)
-    config.valueOf("source") should be(Some("string"))
+    config.getValue("source") should be(Some("string"))
   }
 
   it should "read in some properties from a string, when there is leading and trailing whitespace" in {
@@ -38,7 +38,7 @@ class ServiceConfigTest extends FlatSpec with Matchers {
       """.stripMargin
 
     val config = new Config(configString)
-    config.valueOf("source") should be(Some("string"))
+    config.getValue("source") should be(Some("string"))
   }
 
   it should "read in properites when there is whitespace between lines" in {
@@ -50,8 +50,8 @@ class ServiceConfigTest extends FlatSpec with Matchers {
       """.stripMargin
 
     val config = new Config(configString)
-    config.valueOf("source") should be(Some("string"))
-    config.valueOf("type") should be(Some("test"))
+    config.getValue("source") should be(Some("string"))
+    config.getValue("type") should be(Some("test"))
   }
 
   it should "support property values with an equals sign in them" in {
@@ -61,7 +61,7 @@ class ServiceConfigTest extends FlatSpec with Matchers {
          """.stripMargin
 
        val config = new Config(configString)
-       config.valueOf("data") should be(Some("value=true"))
+       config.getValue("data") should be(Some("value=true"))
   }
 
 
