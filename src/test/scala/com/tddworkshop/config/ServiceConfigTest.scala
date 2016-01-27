@@ -36,5 +36,18 @@ class ServiceConfigTest extends FlatSpec with Matchers {
     config.valueOf("source") should be(Some("string"))
   }
 
+  it should "read in properites when there is whitespace between lines" in {
+    val configString =
+      """
+        |source=string
+        |
+        |type=test
+      """.stripMargin
+
+    val config = new Config(configString)
+    config.valueOf("source") should be(Some("string"))
+    config.valueOf("type") should be(Some("test"))
+  }
+
 
 }
