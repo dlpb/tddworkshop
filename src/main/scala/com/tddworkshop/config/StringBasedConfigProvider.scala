@@ -4,7 +4,7 @@ import java.net.URL
 
 import scala.io.Source
 
-protected class StringBasedConfigProvider private[config] (source: String) extends FallbackAvailableConfigProvider{
+protected class StringBasedConfigProvider private[config] (source: String) extends ConfigProvider{
 
   private var fallback: Option[ConfigProvider] = None
 
@@ -42,15 +42,12 @@ sealed trait ConfigProvider {
   def getValueWithFallback(key: String, fallbackValue: String): String = {
     getValue(key).getOrElse(fallbackValue)
   }
-
-}
-
-protected[config] trait FallbackAvailableConfigProvider extends ConfigProvider {
   def withFallback(fallbackConfigProvider: ConfigProvider): ConfigProvider
+
 }
 
 
 object ConfigProvider {
-  def load(source: String): FallbackAvailableConfigProvider = new StringBasedConfigProvider(source)
-  def load(url: URL): FallbackAvailableConfigProvider = new StringBasedConfigProvider(Source.fromURL(url).mkString)
+  def load(source: String): ConfigProvider = new StringBasedConfigProvider(source)
+  def load(url: URL): ConfigProvider = new StringBasedConfigProvider(Source.fromURL(url).mkString)
 }
