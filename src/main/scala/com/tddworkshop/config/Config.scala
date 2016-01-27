@@ -7,9 +7,7 @@ class Config(source: String) {
      line => !line.trim.isEmpty
    }.map {
      line =>
-       val parts = line.split("=")
-       println(s"$line -> parts are")
-       parts foreach println
+       val parts = line.split("=", 2)
        (parts(0), parts(1))
    }.toMap
   }
