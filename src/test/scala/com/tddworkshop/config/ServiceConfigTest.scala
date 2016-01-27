@@ -82,11 +82,15 @@ class ServiceConfigTest extends FlatSpec with Matchers {
   it should "allow us to compose with a fallback config in case the main config doesnt provide the right key" in {
     val config = ConfigProvider.load("").withFallback(ConfigProvider.load("fallback=true"))
     config.getValue("fallback") should be(Some("true"))
-
   }
 
   it should "not allow us to compose more than one fallback config with the main config" in {
     """ConfigProvider.load("").withFallback(ConfigProvider.load("fallback=true")).withFallback(ConfigProvider.load("something=else"))""" shouldNot compile
+  }
+
+  it should "read in a config from a properties file" in {
+    val config = ConfigProvider.load(getClass.getResource("example.properties"))
+    config.getValue("source") should be("file")
   }
 
 }
