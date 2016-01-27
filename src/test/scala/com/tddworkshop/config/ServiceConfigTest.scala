@@ -20,5 +20,14 @@ class ServiceConfigTest extends FlatSpec with Matchers {
     config.valueOf("rubbish") should be(None)
   }
 
+  it should "read in some properties from a string when created" in {
+    val configString =
+      s"""
+         |source=string
+       """.stripMargin
+    val config = new Config(configString)
+    config.valueOf("source") should be("string")
+  }
+
 
 }
