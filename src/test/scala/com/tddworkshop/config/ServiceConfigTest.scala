@@ -5,29 +5,29 @@ import org.scalatest.{Matchers, FlatSpec}
 class ServiceConfigTest extends FlatSpec with Matchers {
 
   "The config loader" should "give a value when geting a property whose value is present" in {
-    val config = new StringBasedConfigProvider("present_value=present")
+    val config = ConfigProvider.load("present_value=present")
     config.getValue("present_value") should be(Some("present"))
   }
 
   it should "give a value for two properties when getting those properties and their values are present" in {
     val config = new StringBasedConfigProvider(
-      """
-        |value_1=value1
-        |value_2=value2
-      """.stripMargin)
+                                                """
+                                                  |value_1=value1
+                                                  |value_2=value2
+                                                """.stripMargin)
     config.getValue("value_1") should be(Some("value1"))
     config.getValue("value_2") should be(Some("value2"))
     config.getValue("present_value") should be(None)
   }
 
   it should "give a none when the property cannot be found" in {
-    val config = new StringBasedConfigProvider("")
+    val config = ConfigProvider.load("")
     config.getValue("rubbish") should be(None)
   }
 
   it should "read in some properties from a string when created" in {
     val configString = "source=string"
-    val config = new StringBasedConfigProvider(configString)
+    val config = ConfigProvider.load(configString)
     config.getValue("source") should be(Some("string"))
   }
 
@@ -37,7 +37,7 @@ class ServiceConfigTest extends FlatSpec with Matchers {
         |source=string
       """.stripMargin
 
-    val config = new StringBasedConfigProvider(configString)
+    val config = ConfigProvider.load(configString)
     config.getValue("source") should be(Some("string"))
   }
 
@@ -49,19 +49,19 @@ class ServiceConfigTest extends FlatSpec with Matchers {
         |type=test
       """.stripMargin
 
-    val config = new StringBasedConfigProvider(configString)
+    val config = ConfigProvider.load(configString)
     config.getValue("source") should be(Some("string"))
     config.getValue("type") should be(Some("test"))
   }
 
   it should "support property values with an equals sign in them" in {
     val configString =
-         """
-           |data=value=true
-         """.stripMargin
+      """
+        |data=value=true
+      """.stripMargin
 
-       val config = new StringBasedConfigProvider(configString)
-       config.getValue("data") should be(Some("value=true"))
+    val config = ConfigProvider.load(configString)
+    config.getValue("data") should be(Some("value=true"))
   }
 
 

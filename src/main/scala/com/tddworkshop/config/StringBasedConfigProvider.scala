@@ -18,3 +18,7 @@ class StringBasedConfigProvider(source: String) extends ConfigProvider{
 trait ConfigProvider {
   def getValue(key: String): Option[String]
 }
+
+object ConfigProvider {
+  def load(source: String) = new StringBasedConfigProvider(source)
+}
