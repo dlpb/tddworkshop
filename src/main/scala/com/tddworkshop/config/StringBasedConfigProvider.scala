@@ -1,6 +1,6 @@
 package com.tddworkshop.config
 
-protected class StringBasedConfigProvider private[config] (source: String) extends ConfigProvider{
+protected class StringBasedConfigProvider private[config] (source: String) extends FallbackAvailableConfigProvider{
 
   private var fallback: Option[ConfigProvider] = None
 
@@ -32,18 +32,20 @@ protected class StringBasedConfigProvider private[config] (source: String) exten
   }
 }
 
-trait ConfigProvider {
-
+sealed trait ConfigProvider {
   def getValue(key: String): Option[String]
 
   def getValueWithFallback(key: String, fallbackValue: String): String = {
     getValue(key).getOrElse(fallbackValue)
   }
 
-  def withFallback(fallbackConfigProvider: ConfigProvider): ConfigProvider
-
 }
 
+protected[config] trait FallbackAvailableConfigProvider extends ConfigProvider {
+  def withFallback(fallbackConfigProvider: ConfigProvider): ConfigProvider
+}
+
+
 object ConfigProvider {
-  def load(source: String): ConfigProvider = new StringBasedConfigProvider(source)
+  def load(source: String): FallbackAvailableConfigProvider = new StringBasedConfigProvider(source)
 }
