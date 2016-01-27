@@ -83,7 +83,10 @@ class ServiceConfigTest extends FlatSpec with Matchers {
     val config = ConfigProvider.load("").withFallback(ConfigProvider.load("fallback=true"))
     config.getValue("fallback") should be(Some("true"))
 
+  }
 
+  it should "not allow us to compose more than one fallback config with the main config" in {
+    """ConfigProvider.load("").withFallback(ConfigProvider.load("fallback=true")).withFallback(ConfigProvider.load("something=else"))""" shouldNot compile
   }
 
 }
