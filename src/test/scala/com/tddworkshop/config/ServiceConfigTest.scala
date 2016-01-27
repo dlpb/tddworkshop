@@ -49,5 +49,15 @@ class ServiceConfigTest extends FlatSpec with Matchers {
     config.valueOf("type") should be(Some("test"))
   }
 
+  it should "support property values with an equals sign in them" in {
+    val configString =
+         """
+           |data=value=true
+         """.stripMargin
+
+       val config = new Config(configString)
+       config.valueOf("data") should be(Some("value=true"))
+  }
+
 
 }
