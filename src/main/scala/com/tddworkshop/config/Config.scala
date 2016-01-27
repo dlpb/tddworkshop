@@ -12,12 +12,5 @@ class Config(source: String) {
    }.toMap
   }
 
-  def this() = {
-    this(
-      """present_value=present
-        |value_1=value1
-        |value_2=value2""".stripMargin)
-  }
-
   def valueOf(s: String): Option[String] = properties.get(s)
 }

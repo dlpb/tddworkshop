@@ -5,18 +5,23 @@ import org.scalatest.{Matchers, FlatSpec}
 class ServiceConfigTest extends FlatSpec with Matchers {
 
   "The config loader" should "give a value when geting a property whose value is present" in {
-    val config = new Config()
+    val config = new Config("present_value=present")
     config.valueOf("present_value") should be(Some("present"))
   }
 
   it should "give a value for two properties when getting those properties and their values are present" in {
-    val config = new Config()
+    val config = new Config(
+      """
+        |value_1=value1
+        |value_2=value2
+      """.stripMargin)
     config.valueOf("value_1") should be(Some("value1"))
     config.valueOf("value_2") should be(Some("value2"))
+    config.valueOf("present_value") should be(None)
   }
 
   it should "give a none when the property cannot be found" in {
-    val config = new Config()
+    val config = new Config("")
     config.valueOf("rubbish") should be(None)
   }
 
