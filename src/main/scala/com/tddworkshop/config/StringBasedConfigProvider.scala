@@ -1,6 +1,6 @@
 package com.tddworkshop.config
 
-class Config(source: String) extends ConfigProvider{
+class StringBasedConfigProvider(source: String) extends ConfigProvider{
 
   val properties: Map[String, String] = {
    source.trim.lines.filter{

@@ -5,12 +5,12 @@ import org.scalatest.{Matchers, FlatSpec}
 class ServiceConfigTest extends FlatSpec with Matchers {
 
   "The config loader" should "give a value when geting a property whose value is present" in {
-    val config = new Config("present_value=present")
+    val config = new StringBasedConfigProvider("present_value=present")
     config.getValue("present_value") should be(Some("present"))
   }
 
   it should "give a value for two properties when getting those properties and their values are present" in {
-    val config = new Config(
+    val config = new StringBasedConfigProvider(
       """
         |value_1=value1
         |value_2=value2
@@ -21,13 +21,13 @@ class ServiceConfigTest extends FlatSpec with Matchers {
   }
 
   it should "give a none when the property cannot be found" in {
-    val config = new Config("")
+    val config = new StringBasedConfigProvider("")
     config.getValue("rubbish") should be(None)
   }
 
   it should "read in some properties from a string when created" in {
     val configString = "source=string"
-    val config = new Config(configString)
+    val config = new StringBasedConfigProvider(configString)
     config.getValue("source") should be(Some("string"))
   }
 
@@ -37,7 +37,7 @@ class ServiceConfigTest extends FlatSpec with Matchers {
         |source=string
       """.stripMargin
 
-    val config = new Config(configString)
+    val config = new StringBasedConfigProvider(configString)
     config.getValue("source") should be(Some("string"))
   }
 
@@ -49,7 +49,7 @@ class ServiceConfigTest extends FlatSpec with Matchers {
         |type=test
       """.stripMargin
 
-    val config = new Config(configString)
+    val config = new StringBasedConfigProvider(configString)
     config.getValue("source") should be(Some("string"))
     config.getValue("type") should be(Some("test"))
   }
@@ -60,7 +60,7 @@ class ServiceConfigTest extends FlatSpec with Matchers {
            |data=value=true
          """.stripMargin
 
-       val config = new Config(configString)
+       val config = new StringBasedConfigProvider(configString)
        config.getValue("data") should be(Some("value=true"))
   }
 
