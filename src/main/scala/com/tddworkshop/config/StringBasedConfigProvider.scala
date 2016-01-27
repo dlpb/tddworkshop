@@ -1,27 +1,57 @@
 package com.tddworkshop.config
 
-protected class StringBasedConfigProvider(source: String) extends ConfigProvider{
+protected class StringBasedConfigProvider private[config] (source: String) extends ConfigProvider{
+
+  private var fallback: Option[ConfigProvider] = None
 
   val properties: Map[String, String] = {
-   source.trim.lines.filter{
+    source.trim.lines.filter{
      line => !line.trim.isEmpty
    }.map {
      line =>
-       val parts = line.split("=", 2)
-       (parts(0), parts(1))
+     val parts = line.split("=", 2)
+     (parts(0), parts(1))
    }.toMap
   }
 
-  def getValue(s: String): Option[String] = properties.get(s)
-}
+  println(
+    s"""
+      | properties are $properties
+      | self is $this
+      | fallback is $fallback
+    """.stripMargin)
 
-trait ConfigProvider {
-  def getValue(key: String): Option[String]
-  def getValueWithFallback(key: String, fallbackValue: String): String = {
-    getValue(key).getOrElse(fallbackValue)
+
+  override def getValue(key: String): Option[String] =
+    if(properties.contains(key)) properties.get(key)
+    else {
+      fallback flatMap {
+        f => f.getValue(key)
+      }
+    }
+
+  override def withFallback(fallbackConfigProvider: ConfigProvider): ConfigProvider = {
+    fallback = Some(fallbackConfigProvider)
+    this
+  }
+
+  override def toString() = {
+    s"${properties.toString()} + ${this.hashCode()}"
   }
 }
 
+trait ConfigProvider {
+
+  def getValue(key: String): Option[String]
+
+  def getValueWithFallback(key: String, fallbackValue: String): String = {
+    getValue(key).getOrElse(fallbackValue)
+  }
+
+  def withFallback(fallbackConfigProvider: ConfigProvider): ConfigProvider
+
+}
+
 object ConfigProvider {
-  def load(source: String) = new StringBasedConfigProvider(source)
+  def load(source: String): ConfigProvider = new StringBasedConfigProvider(source)
 }
