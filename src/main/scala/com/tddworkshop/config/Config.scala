@@ -3,7 +3,7 @@ package com.tddworkshop.config
 class Config(source: String) {
 
   val properties: Map[String, String] = {
-   source.lines.map {
+   source.trim.lines.map {
      line =>
        val parts = line.split("=")
        println(s"$line -> parts are")
