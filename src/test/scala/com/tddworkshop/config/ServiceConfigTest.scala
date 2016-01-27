@@ -69,5 +69,9 @@ class ServiceConfigTest extends FlatSpec with Matchers {
        config.getValueWithFallback("rubbish", "fallback") should be("fallback")
   }
 
+  it should "allow us to compose with a fallback config in case the main config doesnt provide the right key" in {
+    val config = ConfigProvider.load("").withFallback(ConfigProvider.load("fallback=true"))
+    config.getValue("fallback") should be(Some("true"))
+  }
 
 }
